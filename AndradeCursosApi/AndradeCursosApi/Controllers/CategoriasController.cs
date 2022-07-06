@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AndradeCursosApi.Data;
 using AndradeCursosApi.Models;
+using AndradeCursosApi.Repository.Interfaces;
 
 namespace AndradeCursosApi.Controllers
 {
@@ -14,25 +15,28 @@ namespace AndradeCursosApi.Controllers
     [ApiController]
     public class CategoriasController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly ICategoriaRepository _repository;
 
-        public CategoriasController(DataContext context)
+        public CategoriasController(ICategoriaRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
+
 
         // GET: api/Categorias
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Categoria>>> GetCategorias()
         {
-            return await _context.Categorias.ToListAsync();
+
+            var categorias = await _repository.FindAll();
+            return Ok(categorias);
         }
 
         // GET: api/Categorias/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Categoria>> GetCategoria(int id)
         {
-            var categoria = await _context.Categorias.FindAsync(id);
+            var categoria = await _repository.FindById(id);
 
             if (categoria == null)
             {
@@ -52,11 +56,9 @@ namespace AndradeCursosApi.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(categoria).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _repository.Update(categoria);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -78,8 +80,7 @@ namespace AndradeCursosApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Categoria>> PostCategoria(Categoria categoria)
         {
-            _context.Categorias.Add(categoria);
-            await _context.SaveChangesAsync();
+            await _repository.Create(categoria);
 
            CreatedAtAction("GetCategoria", new { id = categoria.CategoriaId }, categoria);
 
@@ -90,21 +91,20 @@ namespace AndradeCursosApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategoria(int id)
         {
-            var categoria = await _context.Categorias.FindAsync(id);
-            if (categoria == null)
+            var categoria = await _repository.Delete(id);
+            if (categoria == false)
             {
                 return NotFound();
             }
-
-            _context.Categorias.Remove(categoria);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool CategoriaExists(int id)
         {
-            return _context.Categorias.Any(e => e.CategoriaId == id);
+            var categoria = _repository.FindById(id);
+            if (categoria == null) return false;
+            return true;
         }
     }
 }

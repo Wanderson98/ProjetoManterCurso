@@ -14,6 +14,7 @@ namespace AndradeCursosApi.Repository
             _context = context;
         }
 
+
         public async Task<Categoria> Create(Categoria categoria)
         {
            _context.Categorias.Add(categoria);

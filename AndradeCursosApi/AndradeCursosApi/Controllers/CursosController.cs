@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AndradeCursosApi.Data;
 using AndradeCursosApi.Models;
+using AndradeCursosApi.Repository.Interfaces;
 
 namespace AndradeCursosApi.Controllers
 {
@@ -14,25 +15,33 @@ namespace AndradeCursosApi.Controllers
     [ApiController]
     public class CursosController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly ICursoRepository _repository;
 
-        public CursosController(DataContext context)
+        public CursosController(ICursoRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         // GET: api/Cursos
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Curso>>> GetCursos()
         {
-            return await _context.Cursos.ToListAsync();
+            var cursos = await _repository.FindAll();
+            return Ok(cursos);
+        }
+
+        [HttpGet("ativos/")]
+        public async Task<ActionResult<IEnumerable<Curso>>> GetCursosAtivos()
+        {
+            var cursos = await _repository.FindAllActive();
+            return Ok(cursos);
         }
 
         // GET: api/Cursos/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Curso>> GetCurso(int id)
         {
-            var curso = await _context.Cursos.FindAsync(id);
+            var curso = await _repository.FindById(id);
 
             if (curso == null)
             {
@@ -52,11 +61,9 @@ namespace AndradeCursosApi.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(curso).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _repository.Update(curso);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -77,9 +84,14 @@ namespace AndradeCursosApi.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Curso>> PostCurso(Curso curso)
-        {
-            _context.Cursos.Add(curso);
-            await _context.SaveChangesAsync();
+        {        
+
+            if (!(curso.CursoDataInicial.Date >= DateTime.Now))
+            {
+                return BadRequest();
+            }
+
+            await _repository.Create(curso);
 
             return CreatedAtAction("GetCurso", new { id = curso.CursoId }, curso);
         }
@@ -88,21 +100,21 @@ namespace AndradeCursosApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCurso(int id)
         {
-            var curso = await _context.Cursos.FindAsync(id);
-            if (curso == null)
+            var curso = await _repository.Delete(id);
+            if (curso == false)
             {
                 return NotFound();
             }
-
-            _context.Cursos.Remove(curso);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool CursoExists(int id)
         {
-            return _context.Cursos.Any(e => e.CursoId == id);
+            var curso = _repository.FindById(id);
+            if (curso == null) return false;
+            return true;
+
         }
     }
 }

@@ -9,5 +9,6 @@ namespace AndradeCursosApi.Repository.Interfaces
         Task<Log> Create(Log log);
         Task<Log> Update(Log log);
         Task<bool> Delete(int logId);
+        
     }
 }

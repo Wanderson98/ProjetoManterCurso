@@ -43,14 +43,18 @@ namespace AndradeCursosApi.Repository
             return await _context.Logs.ToListAsync();
         }
 
-        public Task<Log> FindById(int logId)
+        public async Task<Log> FindById(int logId)
         {
-            throw new NotImplementedException();
+            var log = await _context.Logs.FindAsync(logId);
+            if (log == null) return null;
+            return log;
         }
 
-        public Task<Log> Update(Log log)
+        public async Task<Log> Update(Log log)
         {
-            throw new NotImplementedException();
+            _context.Logs.Update(log);
+            await _context.SaveChangesAsync();
+            return log;
         }
     }
 }

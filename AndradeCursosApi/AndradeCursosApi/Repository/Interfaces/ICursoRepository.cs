@@ -10,5 +10,6 @@ namespace AndradeCursosApi.Repository.Interfaces
         Task<Curso> Create(Curso curso);
         Task<Curso> Update(Curso curso);
         Task<bool> Delete(int cursoId);
+       
     }
 }
