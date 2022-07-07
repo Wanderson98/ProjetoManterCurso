@@ -48,6 +48,13 @@ namespace AndradeCursosApi.Repository
            return await _context.Cursos.Where(c=> c.IsAtivo).Include(c=>c.Categoria).ToListAsync();
         }
 
+        public async Task<IEnumerable<Curso>> FindAllTeste(Curso curso)
+        {
+            var cursos = await _context.Cursos.Where(x => (x.CursoDataInicial.Date >= curso.CursoDataInicial.Date || x.CursoDataInicial.Date <= curso.CursoDataFinal.Date)
+            && (x.CursoDataFinal.Date >= curso.CursoDataInicial.Date || x.CursoDataFinal <= curso.CursoDataFinal.Date)).ToListAsync();
+            return cursos;
+        }
+
         public async Task<Curso> FindById(int cursoId)
         {
             var curso = await _context.Cursos.FindAsync(cursoId);

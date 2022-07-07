@@ -28,81 +28,81 @@ namespace AndradeCursosApi.Controllers
             return await _context.Logs.ToListAsync();
         }
 
-        // GET: api/Logs/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Log>> GetLog(int id)
-        {
-            var log = await _context.Logs.FindAsync(id);
+        //// GET: api/Logs/5
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Log>> GetLog(int id)
+        //{
+        //    var log = await _context.Logs.FindAsync(id);
 
-            if (log == null)
-            {
-                return NotFound();
-            }
+        //    if (log == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return log;
-        }
+        //    return log;
+        //}
 
-        // PUT: api/Logs/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutLog(int id, Log log)
-        {
-            if (id != log.LogId)
-            {
-                return BadRequest();
-            }
+        //// PUT: api/Logs/5
+        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutLog(int id, Log log)
+        //{
+        //    if (id != log.LogId)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(log).State = EntityState.Modified;
+        //    _context.Entry(log).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LogExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!LogExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        // POST: api/Logs
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Log>> PostLog(Log log)
-        {
-            _context.Logs.Add(log);
-            await _context.SaveChangesAsync();
+        //// POST: api/Logs
+        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPost]
+        //public async Task<ActionResult<Log>> PostLog(Log log)
+        //{
+        //    _context.Logs.Add(log);
+        //    await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLog", new { id = log.LogId }, log);
-        }
+        //    return CreatedAtAction("GetLog", new { id = log.LogId }, log);
+        //}
 
-        // DELETE: api/Logs/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLog(int id)
-        {
-            var log = await _context.Logs.FindAsync(id);
-            if (log == null)
-            {
-                return NotFound();
-            }
+        //// DELETE: api/Logs/5
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteLog(int id)
+        //{
+        //    var log = await _context.Logs.FindAsync(id);
+        //    if (log == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _context.Logs.Remove(log);
-            await _context.SaveChangesAsync();
+        //    _context.Logs.Remove(log);
+        //    await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        private bool LogExists(int id)
-        {
-            return _context.Logs.Any(e => e.LogId == id);
-        }
+        //private bool LogExists(int id)
+        //{
+        //    return _context.Logs.Any(e => e.LogId == id);
+        //}
     }
 }

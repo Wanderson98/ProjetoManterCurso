@@ -39,6 +39,13 @@ namespace AndradeCursosApi.Controllers
             return Ok(cursos);
         }
 
+        [HttpPost("teste/")]
+        public async Task<ActionResult<IEnumerable<Curso>>> GetCursosTeste(Curso curso)
+        {
+            var cursos = await _repository.FindAllTeste(curso);
+            return Ok(cursos);
+        }
+
         // GET: api/Cursos/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Curso>> GetCurso(int id)
@@ -117,7 +124,7 @@ namespace AndradeCursosApi.Controllers
         }
 
         // DELETE: api/Cursos/5
-        [HttpDelete("{id}")]
+        [HttpPut("exclusaolog/")]
         public async Task<IActionResult> DeleteCurso(int id)
         {
             var curso = await _repository.FindById(id);
