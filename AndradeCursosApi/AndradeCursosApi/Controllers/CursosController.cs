@@ -58,20 +58,10 @@ namespace AndradeCursosApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCurso(int id, Curso curso)
         {
-            if (id != curso.CursoId)
-            {
-                return BadRequest();
-            }
-            if (curso.CursoDataInicial.Date < DateTime.Now.Date)
-            {
-                return BadRequest();
-            }
-
-            if (curso.CursoDataFinal.Date < curso.CursoDataInicial.Date)
-            {
-                return BadRequest();
-            }
-
+            string mensagem = await ValidacoesCurso(curso);
+           
+            if (!mensagem.Equals("Ok")) return BadRequest(mensagem);
+        
             try
             {
                 await _repository.Update(curso);
@@ -96,23 +86,11 @@ namespace AndradeCursosApi.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Curso>> PostCurso(Curso curso)
-        {        
+        {
+            string mensagem = await ValidacoesCurso(curso);
 
-            if (curso.CursoDataInicial.Date < DateTime.Now.Date)
-            {
-                return BadRequest("Data inicial do curso não pode ser menor do que hoje");
-            }
+            if (!mensagem.Equals("Ok")) return BadRequest(mensagem);
 
-            if(curso.CursoDataFinal.Date < curso.CursoDataInicial.Date)
-            {
-                return BadRequest("Data final não pode ser menor que a data inicial");
-            }
-
-            if (await VerificarCursosPeriodo(curso))
-            {
-                return BadRequest("Existe(m) curso(s) planejados(s) dentro do período informado");
-            }
-           
             await _repository.Create(curso);
             CreatedAtAction("GetCurso", new { id = curso.CursoId }, curso);
           
@@ -126,15 +104,10 @@ namespace AndradeCursosApi.Controllers
         public async Task<IActionResult> DeleteCurso(int id)
         {
             var curso = await _repository.FindById(id);
-            if (curso == null)
-            {
-                return NotFound();
-            }
 
-            if(curso.CursoDataFinal.Date < DateTime.Now.Date)
-            {
-                return BadRequest();
-            }
+            string mensagem = await ValidacoesCurso(curso);
+
+            if (!mensagem.Equals("Ok")) return BadRequest(mensagem);
 
             curso.IsAtivo = false;
             await _repository.Update(curso);
@@ -188,6 +161,37 @@ namespace AndradeCursosApi.Controllers
             var cursos = await _repository.FindAllTeste(curso);
             if(cursos.Count() < 1) return false;
             return true;
+        }
+
+        private async Task<string> ValidacoesCurso(Curso curso)
+        {
+           
+            if (curso == null)
+            {
+                return "Nao Encontrado";
+            }
+
+            if (curso.CursoDataFinal.Date < DateTime.Now.Date)
+            {
+                return "Não é permitida a exclusão de um curso concluido";
+            }
+
+            if (curso.CursoDataInicial.Date < DateTime.Now.Date)
+            {
+                return "Data inicial do curso não pode ser menor do que hoje";
+            }
+
+            if (curso.CursoDataFinal.Date < curso.CursoDataInicial.Date)
+            {
+                return "Data final não pode ser menor que a data inicial";
+            }
+
+            if (await VerificarCursosPeriodo(curso))
+            {
+                return "Existe(m) curso(s) planejados(s) dentro do período informado";
+            }
+
+            return "Ok";
         }
     }
 }

@@ -9,11 +9,13 @@ namespace AndradeCursosApi.Models
         [Required]
         public int CursoId { get; set; }            
         public Curso Curso { get; set; }
+
         [DataType(DataType.Date)]
         [Required]
         public DateTime LogDataInclusao { get; set; }
         [DataType(DataType.Date)]
         public DateTime? LogDataAtualizacao { get; set; }
+
         [StringLength(100)]
         public string Usuario { get; set; }
     }
