@@ -151,7 +151,9 @@ namespace AndradeCursosApi.Controllers
             var log = new Log()
             {
                 CursoId = curso.CursoId,
-                LogDataInclusao = DateTime.Now
+                LogDataInclusao = DateTime.Now,
+                Usuario = "Admin"
+              
             };
 
             _logRepository.Create(log);
