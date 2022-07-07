@@ -16,10 +16,12 @@ namespace AndradeCursosApi.Controllers
     public class CursosController : ControllerBase
     {
         private readonly ICursoRepository _repository;
+        private readonly ILogRepository _logRepository;
 
-        public CursosController(ICursoRepository repository)
+        public CursosController(ICursoRepository repository, ILogRepository logRepository)
         {
             _repository = repository;
+            _logRepository = logRepository;
         }
 
         // GET: api/Cursos
@@ -60,10 +62,20 @@ namespace AndradeCursosApi.Controllers
             {
                 return BadRequest();
             }
+            if (curso.CursoDataInicial.Date < DateTime.Now.Date)
+            {
+                return BadRequest();
+            }
+
+            if (curso.CursoDataFinal.Date < curso.CursoDataInicial.Date)
+            {
+                return BadRequest();
+            }
 
             try
             {
                 await _repository.Update(curso);
+                await AtualizarLog(curso);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -86,14 +98,22 @@ namespace AndradeCursosApi.Controllers
         public async Task<ActionResult<Curso>> PostCurso(Curso curso)
         {        
 
-            if (!(curso.CursoDataInicial.Date >= DateTime.Now))
+            if (curso.CursoDataInicial.Date < DateTime.Now.Date)
             {
                 return BadRequest();
             }
 
+            if(curso.CursoDataFinal.Date < curso.CursoDataInicial.Date)
+            {
+                return BadRequest();
+            }
+           
             await _repository.Create(curso);
+            CreatedAtAction("GetCurso", new { id = curso.CursoId }, curso);
+          
+            CriarLog(curso);
 
-            return CreatedAtAction("GetCurso", new { id = curso.CursoId }, curso);
+            return Ok(curso);
         }
 
         // DELETE: api/Cursos/5
@@ -115,6 +135,36 @@ namespace AndradeCursosApi.Controllers
             if (curso == null) return false;
             return true;
 
+        }
+
+        private void CriarLog(Curso curso)
+        {
+            var log = new Log()
+            {
+                CursoId = curso.CursoId,
+                LogDataInclusao = DateTime.Now
+            };
+
+            _logRepository.Create(log);
+        }
+
+        private async Task<ActionResult> AtualizarLog(Curso curso)
+        {
+            var log = await _logRepository.FindByCursoId(curso.CursoId);
+
+            log.LogDataAtualizacao = DateTime.Now;
+            try
+            {
+                await _logRepository.Update(log);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+
+            return NoContent();
+            
         }
     }
 }
