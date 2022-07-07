@@ -39,13 +39,6 @@ namespace AndradeCursosApi.Controllers
             return Ok(cursos);
         }
 
-        [HttpPost("teste/")]
-        public async Task<ActionResult<IEnumerable<Curso>>> GetCursosTeste(Curso curso)
-        {
-            var cursos = await _repository.FindAllTeste(curso);
-            return Ok(cursos);
-        }
-
         // GET: api/Cursos/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Curso>> GetCurso(int id)
@@ -107,12 +100,17 @@ namespace AndradeCursosApi.Controllers
 
             if (curso.CursoDataInicial.Date < DateTime.Now.Date)
             {
-                return BadRequest();
+                return BadRequest("Data inicial do curso não pode ser menor do que hoje");
             }
 
             if(curso.CursoDataFinal.Date < curso.CursoDataInicial.Date)
             {
-                return BadRequest();
+                return BadRequest("Data final não pode ser menor que a data inicial");
+            }
+
+            if (await VerificarCursosPeriodo(curso))
+            {
+                return BadRequest("Existe(m) curso(s) planejados(s) dentro do período informado");
             }
            
             await _repository.Create(curso);
@@ -183,6 +181,13 @@ namespace AndradeCursosApi.Controllers
 
             return NoContent();
             
+        }
+
+        private async Task<bool> VerificarCursosPeriodo(Curso curso)
+        {
+            var cursos = await _repository.FindAllTeste(curso);
+            if(cursos.Count() < 1) return false;
+            return true;
         }
     }
 }
