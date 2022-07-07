@@ -1,3 +1,5 @@
+import { Categoria } from "./Categoria";
+
 export class Curso{
 
     cursoId!: number;
@@ -7,5 +9,6 @@ export class Curso{
     cursoQuantidadeAlunos!: number;
     isAtivo!: boolean;
     categoriaId!: number;
+    categoria!: Categoria;
 
 }

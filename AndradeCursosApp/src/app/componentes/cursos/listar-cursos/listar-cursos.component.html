@@ -1,1 +1,73 @@
-<p>listar-cursos works!</p>
+<div>
+
+    <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Adicionar Curso
+      </button>
+    <table class="table mt-4">
+        <thead>
+            <th scope="col">#</th>
+            <th scope="col">Descrição</th>
+            <th scope="col">Data Inicio</th>
+            <th scope="col">Data Final</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Quantidade Participantes</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of cursosAtivos; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ item.cursoDescricao}}</td>
+                <td>{{ item.cursoDataInicial | date : 'dd/MM/yyyy'}}</td>
+                <td>{{ item.cursoDataFinal | date : 'dd/MM/yyyy'}}</td>
+                <td>{{ item.categoria.categoriaNome}}</td>
+                <td *ngIf="item.cursoQuantidadeAlunos < 1">Não Informado</td>
+                <td *ngIf="item.cursoQuantidadeAlunos > 0">{{ item.cursoQuantidadeAlunos}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-primary mt-4" routerLink="">
+        Voltar
+      </button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Adicionar Curso</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="cursoForm" >
+                <div class="mb-3">
+                  <label  class="form-label">Descrição do Curso</label>
+                  <input type="email" class="form-control" formControlName="cursoDescricao" placeholder="Descrição">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Data Inicio</label>
+                  <input type="date" class="form-control" formControlName="cursoDataInicial" placeholder="Data Inicial ">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Data Final</label>
+                    <input type="date" class="form-control" formControlName="cursoDataFinal" placeholder="Data Final">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Quantidade de Alunos</label>
+                    <input type="number" class="form-control" formControlName="cursoQuantidadeAlunos" placeholder="Opcional">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Categoria</label>
+                    <select class="form-select" formControlName="categoriaId">
+                        <option selected>Categoria</option>
+                        <option *ngFor="let item of categorias" [value]="item.categoriaId"> {{ item.categoriaNome }} </option>
+                      </select>
+                </div>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
+          <button type="submit" class="btn btn-primary" (click)="EnviarFormulario()" >Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>

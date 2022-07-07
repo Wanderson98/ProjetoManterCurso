@@ -100,7 +100,7 @@ namespace AndradeCursosApi.Controllers
         }
 
         // DELETE: api/Cursos/5
-        [HttpPut("exclusaolog/")]
+        [HttpPut("exclusaologica/")]
         public async Task<IActionResult> DeleteCurso(int id)
         {
             var curso = await _repository.FindById(id);

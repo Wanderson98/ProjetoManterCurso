@@ -7,6 +7,10 @@ import { NavBarComponent } from './componentes/nav-bar/nav-bar.component';
 import { FooterComponent } from './componentes/footer/footer.component';
 import { HomeComponent } from './componentes/home/home.component';
 import { ListarCursosComponent } from './componentes/cursos/listar-cursos/listar-cursos.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AddEditCursoComponent } from './componentes/cursos/add-edit-curso/add-edit-curso.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,12 +18,17 @@ import { ListarCursosComponent } from './componentes/cursos/listar-cursos/listar
     NavBarComponent,
     FooterComponent,
     HomeComponent,
-    ListarCursosComponent
+    ListarCursosComponent,
+    AddEditCursoComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ToastrModule.forRoot(),
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
