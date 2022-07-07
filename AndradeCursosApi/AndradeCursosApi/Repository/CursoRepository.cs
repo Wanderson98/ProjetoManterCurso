@@ -48,12 +48,14 @@ namespace AndradeCursosApi.Repository
            return await _context.Cursos.Where(c=> c.IsAtivo).Include(c=>c.Categoria).ToListAsync();
         }
 
-        public async Task<IEnumerable<Curso>> FindAllTeste(Curso curso)
+        public async Task<bool> VerificarCursosPeriodo(Curso curso)
         {
             var cursos = await _context.Cursos.Where(x => (x.CursoDataFinal.Date >= curso.CursoDataInicial.Date)
             && (x.CursoDataInicial.Date <= curso.CursoDataFinal.Date) 
             && x.IsAtivo && x.CursoId != curso.CursoId).ToListAsync();
-            return cursos;
+
+            if (cursos.Count() < 1) return false;
+            return true;
         }
 
         public async Task<Curso> FindById(int cursoId)
@@ -70,6 +72,14 @@ namespace AndradeCursosApi.Repository
             _context.Cursos.Update(curso);
             await _context.SaveChangesAsync();
             return curso;
+        }
+
+        public async Task<bool> VerificarCursosDuplicados(Curso curso)
+        {
+           var cursos = await _context.Cursos.Where(x => x.CursoDescricao.Equals(curso.CursoDescricao, StringComparison.OrdinalIgnoreCase )
+            && x.IsAtivo && x.CursoId != curso.CursoId ).ToListAsync();
+            if (cursos.Count() < 1) return false;
+            return true;
         }
     }
 }

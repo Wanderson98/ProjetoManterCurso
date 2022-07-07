@@ -156,12 +156,7 @@ namespace AndradeCursosApi.Controllers
             
         }
 
-        private async Task<bool> VerificarCursosPeriodo(Curso curso)
-        {
-            var cursos = await _repository.FindAllTeste(curso);
-            if(cursos.Count() < 1) return false;
-            return true;
-        }
+
 
         private async Task<string> ValidacoesCurso(Curso curso)
         {
@@ -186,9 +181,14 @@ namespace AndradeCursosApi.Controllers
                 return "Data final não pode ser menor que a data inicial";
             }
 
-            if (await VerificarCursosPeriodo(curso))
+            if (await _repository.VerificarCursosPeriodo(curso))
             {
                 return "Existe(m) curso(s) planejados(s) dentro do período informado";
+            }
+
+            if (await _repository.VerificarCursosDuplicados(curso))
+            {
+                return "Já existe um curso com este nome cadastrado";
             }
 
             return "Ok";

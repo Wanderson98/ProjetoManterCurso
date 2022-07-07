@@ -55,17 +55,19 @@ export class ListarCursosComponent implements OnInit {
   EnviarFormulario(){
     const curso : Curso = this.cursoForm.value;
     console.log(curso)
+    
     this.cursoService.AdicionarCurso(curso).subscribe(
       {
         next:(res) => {
-          this.toastr.success('Gravando!', 'Curso Inserido com Sucesso!');
+         
+          this.toastr.success('Curso Inserido com Sucesso!', 'Gravando!');
           this.cursoForm.reset();
           this.carregarCursosAtivos();
-          
+
 
         },
         error:(res)=> {
-          console.log(res.error)
+          console.log(res)
           this.toastr.error(res.error, 'Error')
         }
       } 
