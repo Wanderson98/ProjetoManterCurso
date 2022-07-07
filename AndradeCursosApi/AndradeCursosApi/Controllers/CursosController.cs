@@ -120,11 +120,20 @@ namespace AndradeCursosApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCurso(int id)
         {
-            var curso = await _repository.Delete(id);
-            if (curso == false)
+            var curso = await _repository.FindById(id);
+            if (curso == null)
             {
                 return NotFound();
             }
+
+            if(curso.CursoDataFinal.Date < DateTime.Now.Date)
+            {
+                return BadRequest();
+            }
+
+            curso.IsAtivo = false;
+            await _repository.Update(curso);
+            await AtualizarLog(curso);
 
             return NoContent();
         }
