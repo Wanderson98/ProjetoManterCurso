@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Curso } from '../Model/Curso';
+import { Curso } from '../model/Curso';
 
 const headersOptions ={
   headers: new HttpHeaders({
@@ -42,7 +42,7 @@ export class CursosService {
   AtualizarCurso(curso:Curso): Observable<Curso>
   {
     const url = `${this.urlApi}/${curso.cursoId}`;
-    return this.http.put<Curso>(url, headersOptions)
+    return this.http.put<Curso>(url, curso, headersOptions)
   }
 
   ExcluirCurso(cursoId: number): Observable<Curso>
