@@ -11,6 +11,7 @@
             <th scope="col">Data Final</th>
             <th scope="col">Categoria</th>
             <th scope="col">Quantidade Participantes</th>
+            <th scope="col">Ações</th>
         </thead>
         <tbody>
             <tr *ngFor="let item of cursosAtivos; let i = index">
@@ -21,6 +22,9 @@
                 <td>{{ item.categoria.categoriaNome}}</td>
                 <td *ngIf="item.cursoQuantidadeAlunos < 1">Não Informado</td>
                 <td *ngIf="item.cursoQuantidadeAlunos > 0">{{ item.cursoQuantidadeAlunos}}</td>
+                <td><button class="btn btn-warning" (click)="CarregarModalEditar(item)" data-bs-toggle="modal" data-bs-target="#exampleModal" >Editar</button>
+                    <button class="btn btn-danger ms-2" (click)="PegarIdExclusao(item.cursoId)" data-bs-toggle="modal" data-bs-target="#modalExclusao">Apagar</button>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -29,13 +33,12 @@
       </button>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal Incluir ou Atualizar Curso-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false" > 
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Adicionar Curso</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="exampleModalLabel"> {{ tituloModal }}</h5>
         </div>
         <div class="modal-body">
             <form [formGroup]="cursoForm" >
@@ -49,7 +52,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Data Final</label>
-                    <input type="date" class="form-control" formControlName="cursoDataFinal" placeholder="Data Final">
+                    <input type="date"  class="form-control" formControlName="cursoDataFinal" placeholder="Data Final">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Quantidade de Alunos</label>
@@ -65,8 +68,27 @@
               </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
-          <button type="submit" class="btn btn-primary" (click)="EnviarFormulario()" >Salvar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="LimparFormulario()" >Voltar</button>
+          <button type="submit" class="btn btn-primary" (click)="EnviarFormulario()" data-bs-dismiss="modal" >Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Confirmar Exclusão Curso-->
+  <div class="modal fade" tabindex="-1" id="modalExclusao">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Exclusão</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Tem certeza que deseja excluir</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="LimparFormulario()">Não</button>
+          <button type="button" class="btn btn-danger" (click)="ExcluirCurso(idExcluir)" data-bs-dismiss="modal">Excluir</button>
         </div>
       </div>
     </div>

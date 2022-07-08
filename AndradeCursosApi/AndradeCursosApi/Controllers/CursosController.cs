@@ -104,7 +104,6 @@ namespace AndradeCursosApi.Controllers
         public async Task<IActionResult> DeleteCurso(int id)
         {
             var curso = await _repository.FindById(id);
-
             string mensagem = await ValidacoesCurso(curso);
 
             if (!mensagem.Equals("Ok")) return BadRequest(mensagem);
@@ -153,10 +152,8 @@ namespace AndradeCursosApi.Controllers
             }
 
             return NoContent();
-            
+
         }
-
-
 
         private async Task<string> ValidacoesCurso(Curso curso)
         {

@@ -76,7 +76,7 @@ namespace AndradeCursosApi.Repository
 
         public async Task<bool> VerificarCursosDuplicados(Curso curso)
         {
-           var cursos = await _context.Cursos.Where(x => x.CursoDescricao.Equals(curso.CursoDescricao, StringComparison.OrdinalIgnoreCase )
+           var cursos = await _context.Cursos.Where(x => x.CursoDescricao.Equals(curso.CursoDescricao)
             && x.IsAtivo && x.CursoId != curso.CursoId ).ToListAsync();
             if (cursos.Count() < 1) return false;
             return true;
