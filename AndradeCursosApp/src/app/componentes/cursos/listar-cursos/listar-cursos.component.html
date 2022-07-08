@@ -3,6 +3,13 @@
     <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Adicionar Curso
       </button>
+
+      
+        <div class="input-group mt-3 mb-3 " >
+          <input class="form-control" type="search" placeholder="Busca" aria-label="Search" [(ngModel)]="filtroListaDescricao" >
+        </div>
+      
+     
     <table class="table mt-4">
         <thead>
             <th scope="col">#</th>
@@ -14,7 +21,7 @@
             <th scope="col">Ações</th>
         </thead>
         <tbody>
-            <tr *ngFor="let item of cursosAtivos; let i = index">
+            <tr *ngFor="let item of cursosFiltradosDescricao; let i = index">
                 <th scope="row">{{ i + 1 }}</th>
                 <td>{{ item.cursoDescricao}}</td>
                 <td>{{ item.cursoDataInicial | date : 'dd/MM/yyyy'}}</td>
@@ -48,11 +55,11 @@
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Data Inicio</label>
-                  <input type="date" class="form-control" formControlName="cursoDataInicial" placeholder="Data Inicial ">
+                  <input type="date" min="{{ dataAtual | date : 'yyyy-MM-dd'}}" id="dataInicial" class="form-control switch" formControlName="cursoDataInicial" placeholder="Data Inicial ">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Data Final</label>
-                    <input type="date"  class="form-control" formControlName="cursoDataFinal" placeholder="Data Final">
+                    <input type="date" min="{{ dataAtual | date : 'yyyy-MM-dd'}}" class="form-control" formControlName="cursoDataFinal" placeholder="Data Final">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Quantidade de Alunos</label>
@@ -60,8 +67,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Categoria</label>
-                    <select class="form-select" formControlName="categoriaId">
-                        <option selected>Categoria</option>
+                    <select class="form-select" aria-placeholder="Categoria" formControlName="categoriaId">
                         <option *ngFor="let item of categorias" [value]="item.categoriaId"> {{ item.categoriaNome }} </option>
                       </select>
                 </div>

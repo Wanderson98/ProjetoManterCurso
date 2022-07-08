@@ -18,13 +18,17 @@ export class ListarCursosComponent implements OnInit {
     ) { }
 
   cursosAtivos!: Curso[];
+  cursosFiltradosDescricao!: Curso[];
   categorias!: Categoria[];
   cursoForm!: FormGroup;
   tituloModal!: string;
   idExcluir!: number;
-  ngOnInit(): void {
+  dataAtual: any = new Date();
+  private _filtroCursosDescricao!: string;
 
-   
+
+
+  ngOnInit(): void {
     this.CarregarCursosAtivos();
     this.CarregarCategorias();
     this.tituloModal = "Adicionar curso";
@@ -37,12 +41,30 @@ export class ListarCursosComponent implements OnInit {
       isAtivo: [true],
       categoriaId: ['', Validators.required]
     });
+   
   }
+
+  public get filtroListaDescricao(){
+    return this._filtroCursosDescricao
+  }
+
+  public set filtroListaDescricao(value: string){
+   this._filtroCursosDescricao = value;
+   this.cursosFiltradosDescricao = this.filtroListaDescricao ? this.filtrarCursosDescricao(this.filtroListaDescricao) : this.cursosAtivos;
+ }
+
+ filtrarCursosDescricao(filtro: string): any{
+  filtro = filtro.toLocaleLowerCase();
+   return this.cursosAtivos.filter(
+     (cursos: {cursoDescricao:string;}) => cursos.cursoDescricao.toLocaleLowerCase().indexOf(filtro)!== -1 
+    );
+ }
 
   CarregarCursosAtivos(): void
   {
     this.cursoService.ListarTodosCursosAtivos().subscribe( data =>{
       this.cursosAtivos = data;
+      this.cursosFiltradosDescricao = data;
      
     })
   }
@@ -57,11 +79,12 @@ export class ListarCursosComponent implements OnInit {
   {
     this.categoriaService.ListarTodasCategorias().subscribe(data =>{
       this.categorias = data;
-      console.log(this.categorias)
+      
     })
   }
 
   CarregarModalEditar(item :any){
+    
     this.tituloModal = "Editar Curso";
     this.cursoForm.controls['cursoId'].setValue(item.cursoId);
     this.cursoForm.controls['cursoDescricao'].setValue(item.cursoDescricao);
@@ -75,7 +98,7 @@ export class ListarCursosComponent implements OnInit {
 
   EnviarFormulario(){
     const curso : Curso = this.cursoForm.value;
-    console.log(curso)
+   
     if(curso.cursoId< 1)
     {
       this.cursoService.AdicionarCurso(curso).subscribe(
@@ -87,7 +110,7 @@ export class ListarCursosComponent implements OnInit {
           },
           error:(res)=> {
             console.log(res)
-            if(res.error.errors ){
+            if(res.error.errors  || res.error == null ){
               this.toastr.error('Erro Inesperado', 'Error')
             }else{
               this.toastr.error(res.error, 'Error')
@@ -105,8 +128,8 @@ export class ListarCursosComponent implements OnInit {
             this.CarregarCursosAtivos();
           },
           error:(res)=> {
-            console.log(res)
-            if(res.error.errors ){
+           
+            if(res.error.errors  || res.error == null ){
               this.toastr.error('Erro Inesperado', 'Error')
             }else{
               this.toastr.error(res.error, 'Error')
@@ -127,8 +150,8 @@ export class ListarCursosComponent implements OnInit {
           this.CarregarCursosAtivos();
         },
         error:(res)=> {
-          console.log(res)
-          if(res.error.errors ){
+         
+          if(res.error.errors || res.error == null ){
             this.toastr.error('Erro Inesperado', 'Error')
           }else{
             this.toastr.error(res.error, 'Error')
@@ -143,4 +166,7 @@ export class ListarCursosComponent implements OnInit {
     this.idExcluir = cursoId
     console.log(this.idExcluir)
   }
+
+  
+  
 }
