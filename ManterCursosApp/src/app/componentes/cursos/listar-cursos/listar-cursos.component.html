@@ -1,0 +1,260 @@
+<div>
+  <!-- Botao para abrir o modal  -->
+  <button
+    type="button"
+    class="btn btn-primary mt-4"
+    data-bs-toggle="modal"
+    data-bs-target="#exampleModal"
+  >
+    Adicionar Curso
+  </button>
+  <!-- campo de filtro -->
+  <div class="row">
+    <!-- filtro por Descrição -->
+    <div class="col-md-6">
+      <div class="input-group mt-3 mb-3 col-md-6">
+        <input
+          class="form-control"
+          type="search"
+          placeholder="Busca"
+          aria-label="Search"
+          [(ngModel)]="filtroListaDescricao"
+        />
+      </div>
+    </div>
+    <!-- filtro por data  -->
+    <div class="col-md-6 mt-3 mb-3">
+      <div class="input-group input-daterange col-md-6">
+        <input
+          type="date"
+          class="form-control"
+          [(ngModel)]="dataInicialFiltro"
+        />
+        <div class="input-group-addon"></div>
+        <input type="date" class="form-control" [(ngModel)]="dataFinalFiltro" />
+        <button class="btn-sm btn-primary" (click)="filtroData()">
+          Filtrar por Data
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Tabela exibição cursos -->
+  <table class="table mt-4">
+    <thead>
+      <th scope="col">#</th>
+      <th scope="col">Descrição</th>
+      <th scope="col">Data Inicio</th>
+      <th scope="col">Data Final</th>
+      <th scope="col">Categoria</th>
+      <th scope="col">Quantidade Participantes</th>
+      <th scope="col">Ações</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of cursosFiltradosDescricao; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ item.cursoDescricao }}</td>
+        <td>{{ item.cursoDataInicial | date: "dd/MM/yyyy" }}</td>
+        <td>{{ item.cursoDataFinal | date: "dd/MM/yyyy" }}</td>
+        <td>{{ item.categoria.categoriaNome }}</td>
+        <td *ngIf="item.cursoQuantidadeAlunos < 1">Não Informado</td>
+        <td *ngIf="item.cursoQuantidadeAlunos > 0">
+          {{ item.cursoQuantidadeAlunos }}
+        </td>
+        <td>
+          <button
+            class="btn btn-warning"
+            (click)="CarregarModalEditar(item)"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            Editar
+          </button>
+          <button
+            class="btn btn-danger ms-2"
+            (click)="PegarIdExclusao(item.cursoId)"
+            data-bs-toggle="modal"
+            data-bs-target="#modalExclusao"
+          >
+            Apagar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <td *ngIf="cursosFiltradosDescricao.length < 1">
+        <h5 class="ms-3">Nenhum curso encontrado</h5>
+      </td>
+    </tfoot>
+  </table>
+  <button type="button" class="btn btn-primary mt-4" routerLink="">
+    Voltar
+  </button>
+</div>
+
+<!-- Modal Incluir ou Atualizar Curso-->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ tituloModal }}</h5>
+      </div>
+      <div class="modal-body">
+        <form
+          [formGroup]="cursoForm"
+          (ngSubmit)="EnviarFormulario()"
+          #FormCurso="ngForm"
+        >
+          <div class="mb-3">
+            <label for="cursoDescricao" class="form-label"
+              >Descrição do Curso*</label
+            >
+            <input
+              type="email"
+              class="form-control"
+              formControlName="cursoDescricao"
+              placeholder="Descrição"
+              required
+            />
+            <div
+              *ngIf="
+                cursoForm.controls['cursoDescricao'].invalid &&
+                cursoForm.controls['cursoDescricao'].touched
+              "
+            >
+              <span class="alert">A Descrição é Obrigatória</span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Data Inicio*</label>
+            <input
+              type="date"
+              min="{{ dataAtual | date: 'yyyy-MM-dd' }}"
+              id="dataInicial"
+              class="form-control switch"
+              formControlName="cursoDataInicial"
+              placeholder="Data Inicial "
+            />
+            <div
+              *ngIf="
+                cursoForm.controls['cursoDataInicial'].invalid &&
+                cursoForm.controls['cursoDataInicial'].touched
+              "
+            >
+              <span class="alert">A Data Inicial é Obrigatória</span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Data Final*</label>
+            <input
+              type="date"
+              min="{{ dataAtual | date: 'yyyy-MM-dd' }}"
+              class="form-control"
+              formControlName="cursoDataFinal"
+              placeholder="Data Final"
+            />
+            <div
+              *ngIf="
+                cursoForm.controls['cursoDataFinal'].invalid &&
+                cursoForm.controls['cursoDataFinal'].touched
+              "
+            >
+              <span class="alert">A Data Final é Obrigatória</span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Quantidade de Alunos</label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="cursoQuantidadeAlunos"
+              placeholder="Opcional"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Categoria*</label>
+            <select class="form-select" formControlName="categoriaId">
+              <option
+                *ngFor="let item of categorias"
+                [value]="item.categoriaId"
+              >
+                {{ item.categoriaNome }}
+              </option>
+            </select>
+            <div
+              *ngIf="
+                cursoForm.controls['categoriaId'].invalid &&
+                cursoForm.controls['categoriaId'].touched
+              "
+            >
+              <span class="alert">A Categoria é Obrigatória</span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              (click)="LimparFormulario()"
+            >
+              Voltar
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              [disabled]="cursoForm.invalid"
+            >
+              Salvar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Confirmar Exclusão Curso-->
+<div class="modal fade" tabindex="-1" id="modalExclusao">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Exclusão</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>Tem certeza que deseja excluir</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+          (click)="LimparFormulario()"
+        >
+          Não
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="ExcluirCurso(idExcluir)"
+          data-bs-dismiss="modal"
+        >
+          Excluir
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
