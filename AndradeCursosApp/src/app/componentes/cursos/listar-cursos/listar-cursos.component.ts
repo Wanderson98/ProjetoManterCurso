@@ -75,6 +75,9 @@ export class ListarCursosComponent implements OnInit {
 
   LimparFormulario(): void {
     this.cursoForm.reset();
+    this.cursoForm.controls['cursoId'].setValue(0);
+    this.cursoForm.controls['isAtivo'].setValue(true);
+    this.cursoForm.controls['cursoQuantidadeAlunos'].setValue(0);
     this.idExcluir = 0;
   }
 
@@ -99,12 +102,15 @@ export class ListarCursosComponent implements OnInit {
 
   EnviarFormulario() {
     const curso: Curso = this.cursoForm.value;
+    console.log(curso)
+    if(this.cursoForm.valid){
 
     if (curso.cursoId < 1) {
       this.cursoService.AdicionarCurso(curso).subscribe({
         next: (res) => {
+          
           this.toastr.success('Curso Inserido com Sucesso!', 'Gravando!');
-          this.cursoForm.reset();
+          this.LimparFormulario();
           this.CarregarCursosAtivos();
         },
         error: (res) => {
@@ -120,7 +126,7 @@ export class ListarCursosComponent implements OnInit {
       this.cursoService.AtualizarCurso(curso).subscribe({
         next: (res) => {
           this.toastr.success('Curso Atualizado com Sucesso!', 'Atualizando!');
-          this.cursoForm.reset();
+          this.LimparFormulario();
           this.CarregarCursosAtivos();
         },
         error: (res) => {
@@ -132,13 +138,16 @@ export class ListarCursosComponent implements OnInit {
         },
       });
     }
+    } else {
+      this.toastr.error('Preencha todos os campos obrigatórios', 'Error');
+    }
   }
 
   ExcluirCurso(cursoId: number) {
     this.cursoService.ExcluirCurso(cursoId).subscribe({
       next: (res) => {
         this.toastr.warning('Curso Excluido com Sucesso!', 'Excluindo!');
-        this.cursoForm.reset();
+        this.LimparFormulario();
         this.CarregarCursosAtivos();
       },
       error: (res) => {
