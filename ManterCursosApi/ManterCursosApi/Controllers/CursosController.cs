@@ -156,7 +156,7 @@ namespace AndradeCursosApi.Controllers
             return NoContent();
 
         }
-
+        
         private async Task<string> ValidacoesCurso(Curso curso)
         {
            
