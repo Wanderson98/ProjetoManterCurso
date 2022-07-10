@@ -24,6 +24,7 @@ export class ListarCursosComponent implements OnInit {
   cursosFiltradosDescricao!: Curso[];
   categorias!: Categoria[];
   cursoForm!: FormGroup;
+  buscaForm!: FormGroup
   tituloModal!: string;
   idExcluir!: number;
   dataAtual: any = new Date();
@@ -45,6 +46,12 @@ export class ListarCursosComponent implements OnInit {
       isAtivo: [true],
       categoriaId: ['', Validators.required],
     });
+
+    this.buscaForm = this.formBuilder.group({
+      dataInicialFiltro : [],
+      dataFinalFiltro : [],
+      busca: []
+    })
   }
 
   public get filtroListaDescricao() {
@@ -166,7 +173,7 @@ export class ListarCursosComponent implements OnInit {
 
   filtroData(){
 
-    if(this.dataInicialFiltro > this.dataFinalFiltro ){
+    if(this.dataInicialFiltro > this.dataFinalFiltro && this.dataFinalFiltro ){
       this.toastr.error('Data final não pode ser menor que a data inicial');
     } else if(!this.dataInicialFiltro && !this.dataFinalFiltro){
       this.CarregarCursosAtivos();
@@ -201,4 +208,8 @@ export class ListarCursosComponent implements OnInit {
     })
   }
 
+  LimparFiltro(){
+    this.buscaForm.reset();
+    this.CarregarCursosAtivos();
+  }
 }

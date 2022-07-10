@@ -13,29 +13,39 @@
     <!-- filtro por Descrição -->
     <div class="col-md-6">
       <div class="input-group mt-3 mb-3 col-md-6">
-        <input
+          <input
           class="form-control"
           type="search"
           placeholder="Busca"
           aria-label="Search"
           [(ngModel)]="filtroListaDescricao"
         />
+   
+        
       </div>
     </div>
     <!-- filtro por data  -->
     <div class="col-md-6 mt-3 mb-3">
-      <div class="input-group input-daterange col-md-6">
-        <input
-          type="date"
-          class="form-control"
-          [(ngModel)]="dataInicialFiltro"
-        />
-        <div class="input-group-addon"></div>
-        <input type="date" class="form-control" [(ngModel)]="dataFinalFiltro" />
-        <button class="btn-sm btn-primary" (click)="filtroData()">
-          Filtrar por Data
-        </button>
-      </div>
+      <form [formGroup]="buscaForm">
+        <div class="input-group input-daterange col-md-6">
+          <input
+            formControlName="dataInicialFiltro"
+            type="date"
+            class="form-control"
+            [(ngModel)]="dataInicialFiltro"
+          />
+          <div class="input-group-addon"></div>
+          <input type="date" class="form-control" [(ngModel)]="dataFinalFiltro" 
+          formControlName="dataFinalFiltro"/>
+          <button class="btn-sm btn-primary" (click)="filtroData()">
+            Filtrar por Data
+          </button>
+          <button class="btn-sm btn-warning" (click)="LimparFiltro()">
+            Limpar Busca
+          </button>
+        </div>
+      </form>
+     
     </div>
   </div>
   <!-- Tabela exibição cursos -->
