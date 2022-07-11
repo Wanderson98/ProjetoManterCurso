@@ -81,6 +81,7 @@ export class ListarCursosComponent implements OnInit {
   }
 
   LimparFormulario(): void {
+    this.buscaForm.reset();
     this.cursoForm.reset();
     this.cursoForm.controls['cursoId'].setValue(0);
     this.cursoForm.controls['isAtivo'].setValue(true);

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AndradeCursosApi.Data;
 using AndradeCursosApi.Models;
 using AndradeCursosApi.Repository.Interfaces;
 
@@ -103,13 +97,15 @@ namespace AndradeCursosApi.Controllers
         [HttpPut("exclusaologica/{id}")]
         public async Task<IActionResult> DeleteCurso(int id)
         {
+
+
             var curso = await _repository.FindById(id);
             string mensagem = await ValidacoesCurso(curso);
 
+            if (curso.CursoDataFinal.Date < DateTime.Now.Date) return BadRequest("Não é permitida a exclusão de um curso concluido");
+
             if (!mensagem.Equals("Ok")) return BadRequest(mensagem);
 
-            if (curso.CursoDataFinal.Date < DateTime.Now.Date) return BadRequest("Não é permitida a exclusão de um curso concluido");
-           
             curso.IsAtivo = false;
             await _repository.Update(curso);
             await AtualizarLog(curso);
@@ -182,6 +178,7 @@ namespace AndradeCursosApi.Controllers
 
             if (await _repository.VerificarCursosDuplicados(curso))
             {
+                
                 return "Já existe um curso com este nome cadastrado";
             }
 
