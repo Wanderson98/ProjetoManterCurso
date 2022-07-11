@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace AndradeCursosApi.Migrations
+namespace ManterCursosApi.Migrations
 {
     public partial class InclusaoCampoUsuarioTabelaLog : Migration
     {

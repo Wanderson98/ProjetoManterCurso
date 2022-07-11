@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AndradeCursosApi.Data;
-using AndradeCursosApi.Models;
+using ManterCursosApi.Data;
+using ManterCursosApi.Models;
 
-namespace AndradeCursosApi.Controllers
+namespace ManterCursosApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

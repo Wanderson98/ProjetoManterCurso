@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AndradeCursosApi.Models;
-using AndradeCursosApi.Repository.Interfaces;
+using ManterCursosApi.Models;
+using ManterCursosApi.Repository.Interfaces;
 
-namespace AndradeCursosApi.Controllers
+namespace ManterCursosApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

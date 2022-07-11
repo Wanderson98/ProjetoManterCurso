@@ -1,6 +1,6 @@
-using AndradeCursosApi.Data;
-using AndradeCursosApi.Repository;
-using AndradeCursosApi.Repository.Interfaces;
+using ManterCursosApi.Data;
+using ManterCursosApi.Repository;
+using ManterCursosApi.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

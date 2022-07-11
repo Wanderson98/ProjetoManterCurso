@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace AndradeCursosApi.Migrations
+namespace ManterCursosApi.Migrations
 {
     public partial class InclusaoTabelaLog : Migration
     {

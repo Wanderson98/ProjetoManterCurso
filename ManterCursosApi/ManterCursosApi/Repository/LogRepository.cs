@@ -1,9 +1,9 @@
-﻿using AndradeCursosApi.Data;
-using AndradeCursosApi.Models;
-using AndradeCursosApi.Repository.Interfaces;
+﻿using ManterCursosApi.Data;
+using ManterCursosApi.Models;
+using ManterCursosApi.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace AndradeCursosApi.Repository
+namespace ManterCursosApi.Repository
 {
     public class LogRepository : ILogRepository
     {

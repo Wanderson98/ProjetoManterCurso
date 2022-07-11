@@ -1,6 +1,6 @@
-﻿using AndradeCursosApi.Models;
+﻿using ManterCursosApi.Models;
 
-namespace AndradeCursosApi.Repository.Interfaces
+namespace ManterCursosApi.Repository.Interfaces
 {
     public interface ICursoRepository
     {

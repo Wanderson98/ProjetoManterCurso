@@ -1,7 +1,7 @@
-﻿using AndradeCursosApi.Models;
+﻿using ManterCursosApi.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AndradeCursosApi.Data
+namespace ManterCursosApi.Data
 {
     public class DataContext : DbContext
     {

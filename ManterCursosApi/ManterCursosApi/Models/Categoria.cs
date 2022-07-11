@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AndradeCursosApi.Models
+namespace ManterCursosApi.Models
 {
     public class Categoria
     {
