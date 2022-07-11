@@ -102,7 +102,7 @@ namespace ManterCursosApi.Controllers
             var curso = await _repository.FindById(id);
             string mensagem = await ValidacoesCurso(curso);
 
-            if (curso.CursoDataFinal.Date < DateTime.Now.Date) return BadRequest("Não é permitida a exclusão de um curso concluido");
+            if (curso.CursoDataFinal.Date < DateTime.Now.Date) return BadRequest(Validacoes.ErrorExclusaoCursoConcluido);
 
             if (!mensagem.Equals("Ok")) return BadRequest(mensagem);
 
@@ -158,31 +158,31 @@ namespace ManterCursosApi.Controllers
            
             if (curso == null)
             {
-                return "Nao Encontrado";
+                return Validacoes.ErrorNaoEncontrado;
             }
 
             if (curso.CursoDataInicial.Date < DateTime.Now.Date)
             {
-                return "Data inicial do curso não pode ser menor do que hoje";
+                return Validacoes.ErrorDataInicialMenorAtual;
             }
 
             if (curso.CursoDataFinal.Date < curso.CursoDataInicial.Date)
             {
-                return "Data final não pode ser menor que a data inicial";
+                return Validacoes.ErrorDataFinalMenorInicial;
             }
 
             if (await _repository.VerificarCursosPeriodo(curso))
             {
-                return "Existe(m) curso(s) planejados(s) dentro do período informado";
+                return Validacoes.ErrorCursoPeriodo;
             }
 
             if (await _repository.VerificarCursosDuplicados(curso))
             {
                 
-                return "Já existe um curso com este nome cadastrado";
+                return Validacoes.ErrorCursoJaCadastrado;
             }
 
-            return "Ok";
+            return Validacoes.CursoOK;
         }
     }
 }
