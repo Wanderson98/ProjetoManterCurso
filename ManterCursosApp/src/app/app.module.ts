@@ -11,13 +11,16 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
     FooterComponent,
     HomeComponent,
-    ListarCursosComponent
+    ListarCursosComponent,
+   
+    
 
   ],
   imports: [

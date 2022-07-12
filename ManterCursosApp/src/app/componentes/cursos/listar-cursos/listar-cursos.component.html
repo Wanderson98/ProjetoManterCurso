@@ -12,6 +12,7 @@
     Adicionar Curso
   </button>
   <!-- campo de filtro -->
+
   <div class="row">
     <!-- filtro por Descrição -->
     <div class="col-md-6">
@@ -28,14 +29,16 @@
     <!-- filtro por data  -->
     <div class="col-md-6 mt-3 mb-3">
       <form [formGroup]="buscaForm">
+       
         <div class="input-group input-daterange col-md-6">
+          
           <input
             formControlName="dataInicialFiltro"
             type="date"
-            class="form-control"
+            class="form-control mt"
             [(ngModel)]="dataInicialFiltro"
           />
-          
+          <p class="m-2"> Até </p>
           <div class="input-group-addon"></div>
           <input
             type="date"
@@ -43,13 +46,13 @@
             [(ngModel)]="dataFinalFiltro"
             formControlName="dataFinalFiltro"
           />
-          <button class="btn-sm btn-primary" (click)="filtroData()">
+          <button class="btn-sm btn-primary ms-2" (click)="filtroData()">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
               <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
             </svg>
             Filtrar por Data
           </button>
-          <button class="btn-sm btn-warning" (click)="LimparFiltro()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash2" viewBox="0 0 16 16">
+          <button class="btn-sm btn-warning ms-2 " (click)="LimparFiltro()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash2" viewBox="0 0 16 16">
             <path d="M14 3a.702.702 0 0 1-.037.225l-1.684 10.104A2 2 0 0 1 10.305 15H5.694a2 2 0 0 1-1.973-1.671L2.037 3.225A.703.703 0 0 1 2 3c0-1.105 2.686-2 6-2s6 .895 6 2zM3.215 4.207l1.493 8.957a1 1 0 0 0 .986.836h4.612a1 1 0 0 0 .986-.836l1.493-8.957C11.69 4.689 9.954 5 8 5c-1.954 0-3.69-.311-4.785-.793z"/>
           </svg>
             Limpar Busca
@@ -63,23 +66,23 @@
     <thead>
       <th scope="col">#</th>
       <th scope="col">Descrição</th>
-      <th scope="col">Data Inicio</th>
-      <th scope="col">Data Final</th>
       <th scope="col">Categoria</th>
       <th scope="col">Quantidade Participantes</th>
+      <th scope="col">Data Inicio</th>
+      <th scope="col">Data Final</th>
       <th scope="col">Ações</th>
     </thead>
     <tbody>
       <tr *ngFor="let item of cursosFiltradosDescricao; let i = index">
         <th scope="row">{{ i + 1 }}</th>
         <td>{{ item.cursoDescricao }}</td>
-        <td>{{ item.cursoDataInicial | date: "dd/MM/yyyy" }}</td>
-        <td>{{ item.cursoDataFinal | date: "dd/MM/yyyy" }}</td>
         <td>{{ item.categoria.categoriaNome }}</td>
         <td *ngIf="item.cursoQuantidadeAlunos < 1">Não Informado</td>
         <td *ngIf="item.cursoQuantidadeAlunos > 0">
           {{ item.cursoQuantidadeAlunos }}
         </td>
+        <td>{{ item.cursoDataInicial | date: "dd/MM/yyyy" }}</td>
+        <td>{{ item.cursoDataFinal | date: "dd/MM/yyyy" }}</td>
         <td>
           <button
             class="btn btn-warning"
@@ -155,7 +158,9 @@
                 cursoForm.controls['cursoDescricao'].touched
               "
             >
-              <span class="alert">A Descrição é Obrigatória</span>
+              <span class="alert"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-exclamation-octagon-fill me-1" viewBox="0 0 16 16">
+                <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+              </svg>A Descrição é Obrigatória</span>
             </div>
           </div>
           <div class="mb-3">
@@ -174,7 +179,9 @@
                 cursoForm.controls['cursoDataInicial'].touched
               "
             >
-              <span class="alert">A Data Inicial é Obrigatória</span>
+              <span class="alert"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-exclamation-octagon-fill me-1" viewBox="0 0 16 16">
+                <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+              </svg>A Data Inicial é Obrigatória</span>
             </div>
           </div>
           <div class="mb-3">
@@ -192,7 +199,9 @@
                 cursoForm.controls['cursoDataFinal'].touched
               "
             >
-              <span class="alert">A Data Final é Obrigatória</span>
+              <span class="alert"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-exclamation-octagon-fill me-1" viewBox="0 0 16 16">
+                <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+              </svg>A Data Final é Obrigatória</span>
             </div>
           </div>
           <div class="mb-3">
@@ -220,7 +229,9 @@
                 cursoForm.controls['categoriaId'].touched
               "
             >
-              <span class="alert">A Categoria é Obrigatória</span>
+              <span class="alert"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-exclamation-octagon-fill me-1" viewBox="0 0 16 16">
+                <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+              </svg>A Categoria é Obrigatória</span>
             </div>
           </div>
           <div class="modal-footer">

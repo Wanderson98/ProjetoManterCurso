@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ManterCursosApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220707115702_InclusaoCampoUsuarioTabelaLog")]
-    partial class InclusaoCampoUsuarioTabelaLog
+    [Migration("20220711191527_CorrecaoMigrationBancoDeDados")]
+    partial class CorrecaoMigrationBancoDeDados
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace ManterCursosApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("AndradeCursosApi.Models.Categoria", b =>
+            modelBuilder.Entity("ManterCursosApi.Models.Categoria", b =>
                 {
                     b.Property<int>("CategoriaId")
                         .ValueGeneratedOnAdd()
@@ -42,7 +42,7 @@ namespace ManterCursosApi.Migrations
                     b.ToTable("Categorias");
                 });
 
-            modelBuilder.Entity("AndradeCursosApi.Models.Curso", b =>
+            modelBuilder.Entity("ManterCursosApi.Models.Curso", b =>
                 {
                     b.Property<int>("CursoId")
                         .ValueGeneratedOnAdd()
@@ -77,7 +77,7 @@ namespace ManterCursosApi.Migrations
                     b.ToTable("Cursos");
                 });
 
-            modelBuilder.Entity("AndradeCursosApi.Models.Log", b =>
+            modelBuilder.Entity("ManterCursosApi.Models.Log", b =>
                 {
                     b.Property<int>("LogId")
                         .ValueGeneratedOnAdd()
@@ -94,6 +94,10 @@ namespace ManterCursosApi.Migrations
                     b.Property<DateTime>("LogDataInclusao")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Modificacao")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("Usuario")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -105,9 +109,9 @@ namespace ManterCursosApi.Migrations
                     b.ToTable("Logs");
                 });
 
-            modelBuilder.Entity("AndradeCursosApi.Models.Curso", b =>
+            modelBuilder.Entity("ManterCursosApi.Models.Curso", b =>
                 {
-                    b.HasOne("AndradeCursosApi.Models.Categoria", "Categoria")
+                    b.HasOne("ManterCursosApi.Models.Categoria", "Categoria")
                         .WithMany()
                         .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -116,9 +120,9 @@ namespace ManterCursosApi.Migrations
                     b.Navigation("Categoria");
                 });
 
-            modelBuilder.Entity("AndradeCursosApi.Models.Log", b =>
+            modelBuilder.Entity("ManterCursosApi.Models.Log", b =>
                 {
-                    b.HasOne("AndradeCursosApi.Models.Curso", "Curso")
+                    b.HasOne("ManterCursosApi.Models.Curso", "Curso")
                         .WithMany()
                         .HasForeignKey("CursoId")
                         .OnDelete(DeleteBehavior.Cascade)

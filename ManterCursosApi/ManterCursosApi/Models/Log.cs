@@ -13,11 +13,17 @@ namespace ManterCursosApi.Models
         [DataType(DataType.Date)]
         [Required]
         public DateTime LogDataInclusao { get; set; }
+
         [DataType(DataType.Date)]
         public DateTime? LogDataAtualizacao { get; set; }
 
         [StringLength(100)]
         public string Usuario { get; set; }
+
+        [StringLength(100)]
+        public string Modificacao { get; set; }
+
+
     }
 }
 

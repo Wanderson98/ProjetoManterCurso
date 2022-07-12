@@ -28,8 +28,8 @@ export class ListarCursosComponent implements OnInit {
   tituloModal!: string;
   idExcluir!: number;
   dataAtual: any = new Date();
-  dataInicialFiltro: any;
-  dataFinalFiltro: any;
+  dataInicialFiltro!: Date;
+  dataFinalFiltro!: Date;
   private _filtroCursosDescricao!: string;
 
   ngOnInit(): void {
@@ -42,7 +42,7 @@ export class ListarCursosComponent implements OnInit {
       cursoDescricao: ['', Validators.compose([Validators.required])],
       cursoDataInicial: ['', Validators.compose([Validators.required])],
       cursoDataFinal: ['', Validators.compose([Validators.required])],
-      cursoQuantidadeAlunos: [0],
+      cursoQuantidadeAlunos: [null],
       isAtivo: [true],
       categoriaId: ['', Validators.required],
     });
@@ -85,7 +85,6 @@ export class ListarCursosComponent implements OnInit {
     this.cursoForm.reset();
     this.cursoForm.controls['cursoId'].setValue(0);
     this.cursoForm.controls['isAtivo'].setValue(true);
-    this.cursoForm.controls['cursoQuantidadeAlunos'].setValue(0);
     this.idExcluir = 0;
   }
 
@@ -106,6 +105,7 @@ export class ListarCursosComponent implements OnInit {
       item.cursoQuantidadeAlunos
     );
     this.cursoForm.controls['categoriaId'].setValue(item.categoriaId);
+    //this.cursoForm.patchValue(item)
   }
 
   EnviarFormulario() {
@@ -197,6 +197,7 @@ export class ListarCursosComponent implements OnInit {
 
   filtrarCursoDataFinal(dataFinal: any) : any
   {
+    
     this.cursosFiltradosDescricao = this.cursosAtivos.filter(result =>{
       return result.cursoDataInicial <= dataFinal || result.cursoDataFinal <= dataFinal
     })

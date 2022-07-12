@@ -59,7 +59,7 @@ namespace ManterCursosApi.Controllers
             try
             {
                 await _repository.Update(curso);
-                await AtualizarLog(curso);
+                await AtualizarLog(curso, 1);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -108,7 +108,7 @@ namespace ManterCursosApi.Controllers
 
             curso.IsAtivo = false;
             await _repository.Update(curso);
-            await AtualizarLog(curso);
+            await AtualizarLog(curso, 2);
 
             return NoContent();
         }
@@ -121,24 +121,28 @@ namespace ManterCursosApi.Controllers
 
         }
 
-        private void CriarLog(Curso curso)
+        private void CriarLog(Curso curso )
         {
             var log = new Log()
             {
                 CursoId = curso.CursoId,
                 LogDataInclusao = DateTime.Now,
-                Usuario = "Admin"
+                Usuario = "Admin",
+                Modificacao = "Criação Do Curso"
               
             };
 
             _logRepository.Create(log);
         }
 
-        private async Task<ActionResult> AtualizarLog(Curso curso)
+        private async Task<ActionResult> AtualizarLog(Curso curso, int cod)
         {
             var log = await _logRepository.FindByCursoId(curso.CursoId);
-
             log.LogDataAtualizacao = DateTime.Now;
+
+            if (cod == 1) log.Modificacao = "Alteração do Curso";
+            if (cod == 2) log.Modificacao = "Exclusão do Curso";
+
             try
             {
                 await _logRepository.Update(log);

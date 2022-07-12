@@ -3,6 +3,7 @@ using System;
 using ManterCursosApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -15,49 +16,57 @@ namespace ManterCursosApi.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.6");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            modelBuilder.Entity("AndradeCursosApi.Models.Categoria", b =>
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("ManterCursosApi.Models.Categoria", b =>
                 {
                     b.Property<int>("CategoriaId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoriaId"), 1L, 1);
 
                     b.Property<string>("CategoriaNome")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("CategoriaId");
 
                     b.ToTable("Categorias");
                 });
 
-            modelBuilder.Entity("AndradeCursosApi.Models.Curso", b =>
+            modelBuilder.Entity("ManterCursosApi.Models.Curso", b =>
                 {
                     b.Property<int>("CursoId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CursoId"), 1L, 1);
 
                     b.Property<int>("CategoriaId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CursoDataFinal")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CursoDataInicial")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CursoDescricao")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int?>("CursoQuantidadeAlunos")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsAtivo")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bit");
 
                     b.HasKey("CursoId");
 
@@ -66,24 +75,30 @@ namespace ManterCursosApi.Migrations
                     b.ToTable("Cursos");
                 });
 
-            modelBuilder.Entity("AndradeCursosApi.Models.Log", b =>
+            modelBuilder.Entity("ManterCursosApi.Models.Log", b =>
                 {
                     b.Property<int>("LogId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LogId"), 1L, 1);
 
                     b.Property<int>("CursoId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("LogDataAtualizacao")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("LogDataInclusao")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Modificacao")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Usuario")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("LogId");
 
@@ -92,9 +107,9 @@ namespace ManterCursosApi.Migrations
                     b.ToTable("Logs");
                 });
 
-            modelBuilder.Entity("AndradeCursosApi.Models.Curso", b =>
+            modelBuilder.Entity("ManterCursosApi.Models.Curso", b =>
                 {
-                    b.HasOne("AndradeCursosApi.Models.Categoria", "Categoria")
+                    b.HasOne("ManterCursosApi.Models.Categoria", "Categoria")
                         .WithMany()
                         .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -103,9 +118,9 @@ namespace ManterCursosApi.Migrations
                     b.Navigation("Categoria");
                 });
 
-            modelBuilder.Entity("AndradeCursosApi.Models.Log", b =>
+            modelBuilder.Entity("ManterCursosApi.Models.Log", b =>
                 {
-                    b.HasOne("AndradeCursosApi.Models.Curso", "Curso")
+                    b.HasOne("ManterCursosApi.Models.Curso", "Curso")
                         .WithMany()
                         .HasForeignKey("CursoId")
                         .OnDelete(DeleteBehavior.Cascade)
