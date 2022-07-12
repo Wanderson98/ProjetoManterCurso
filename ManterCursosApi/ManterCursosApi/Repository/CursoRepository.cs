@@ -52,7 +52,7 @@ namespace ManterCursosApi.Repository
         {
             var cursos = await _context.Cursos.Where(x => (x.CursoDataFinal.Date >= curso.CursoDataInicial.Date)
             && (x.CursoDataInicial.Date <= curso.CursoDataFinal.Date) 
-            && x.IsAtivo && x.CursoId != curso.CursoId).ToListAsync();
+            && (x.IsAtivo && x.CursoId != curso.CursoId)).ToListAsync();
 
             if (cursos.Count() < 1) return false;
             return true;

@@ -59,6 +59,7 @@ namespace ManterCursosApi.Controllers
             try
             {
                 await _repository.Update(curso);
+
                 await AtualizarLog(curso, 1);
             }
             catch (DbUpdateConcurrencyException)

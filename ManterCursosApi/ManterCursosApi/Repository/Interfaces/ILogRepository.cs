@@ -5,6 +5,7 @@ namespace ManterCursosApi.Repository.Interfaces
     public interface ILogRepository
     {
         Task<IEnumerable<Log>> FindAll();
+        Task<IEnumerable<Log>> FindAllOrderDate();
         Task<Log> FindById(int logId);
         Task<Log> FindByCursoId(int cursoId);
         Task<Log> Create(Log log);

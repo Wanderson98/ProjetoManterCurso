@@ -10,6 +10,7 @@ import { ListarCursosComponent } from './componentes/cursos/listar-cursos/listar
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ListarLogsComponent } from './componentes/listar-logs/listar-logs.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FooterComponent,
     HomeComponent,
     ListarCursosComponent,
+    ListarLogsComponent,
    
     
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ManterCursosApi.Data;
 using ManterCursosApi.Models;
+using ManterCursosApi.Repository.Interfaces;
 
 namespace ManterCursosApi.Controllers
 {
@@ -14,18 +15,21 @@ namespace ManterCursosApi.Controllers
     [ApiController]
     public class LogsController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly ILogRepository _logRepository;
 
-        public LogsController(DataContext context)
+        public LogsController(ILogRepository logRepository)
         {
-            _context = context;
+            _logRepository = logRepository;
         }
+
+
 
         // GET: api/Logs
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Log>>> GetLogs()
         {
-            return await _context.Logs.ToListAsync();
+            var logs = await _logRepository.FindAllOrderDate();
+            return Ok(logs);
         }
 
         //// GET: api/Logs/5

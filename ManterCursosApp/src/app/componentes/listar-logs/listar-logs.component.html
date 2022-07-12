@@ -1,0 +1,23 @@
+<h4 class=" mt-4">Tabela de Logs</h4>
+
+<table class="table mt-4">
+    <thead>
+      <th scope="col">#</th>
+      <th scope="col">Curso</th>
+      <th scope="col">Data Inclusão</th>
+      <th scope="col">Data Última Atualização</th>
+      <th scope="col">Última Modificação</th>
+      <th scope="col">Usuário</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of logs; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ item.curso.cursoDescricao}}</td>
+        <td>{{ item.logDataInclusao | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+        <td *ngIf="!item.logDataAtualizacao">Sem alteração</td>
+        <td  *ngIf="item.logDataAtualizacao">{{ item.logDataAtualizacao | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+        <td>{{ item.modificacao }}</td>
+        <td>{{ item.usuario }}</td>
+      </tr>
+    </tbody>
+  </table>
