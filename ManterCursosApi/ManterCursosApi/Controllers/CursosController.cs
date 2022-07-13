@@ -101,6 +101,7 @@ namespace ManterCursosApi.Controllers
 
 
             var curso = await _repository.FindById(id);
+
             string mensagem = await ValidacoesCurso(curso);
 
             if (curso.CursoDataFinal.Date < DateTime.Now.Date) return BadRequest(Validacoes.ErrorExclusaoCursoConcluido);

@@ -126,7 +126,7 @@ export class ListarCursosComponent implements OnInit {
           if (res.error.errors || res.error == null) {
             this.toastr.error('Erro Inesperado', 'Error');
           } else {
-            this.toastr.error(res.error, 'Error');
+            this.toastr.error(res.error);
           }
         },
       });
@@ -141,7 +141,7 @@ export class ListarCursosComponent implements OnInit {
           if (res.error.errors || res.error == null) {
             this.toastr.error('Erro Inesperado', 'Error');
           } else {
-            this.toastr.error(res.error, 'Error');
+            this.toastr.error(res.error);
           }
         },
       });
@@ -159,10 +159,11 @@ export class ListarCursosComponent implements OnInit {
         this.CarregarCursosAtivos();
       },
       error: (res) => {
+        console.log(res)
         if (res.error.errors || res.error == null) {
           this.toastr.error('Erro Inesperado', 'Error');
         } else {
-          this.toastr.error(res.error, 'Error');
+          this.toastr.error(res.error);
         }
       },
     });
@@ -215,8 +216,4 @@ export class ListarCursosComponent implements OnInit {
     this.CarregarCursosAtivos();
   }
 
-  convertDate(date: any) : Date
-  {
-    return date.split('T')[0]
-  }
 }
