@@ -9,6 +9,6 @@ namespace ManterCursosApi.Repository.Interfaces
         Task<Categoria> Create(Categoria categoria);
         Task<Categoria> Update(Categoria categoria);
         Task<bool> Delete(int categoriaId);
-     
+
     }
 }

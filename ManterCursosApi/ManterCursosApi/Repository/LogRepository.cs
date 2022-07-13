@@ -45,13 +45,13 @@ namespace ManterCursosApi.Repository
 
         public async Task<IEnumerable<Log>> FindAllOrderDate()
         {
-            return await _context.Logs.OrderByDescending(x=> x.LogDataAtualizacao).Include(c=>c.Curso).ToListAsync();
+            return await _context.Logs.OrderByDescending(x => x.LogDataAtualizacao).Include(c => c.Curso).ToListAsync();
         }
 
         public async Task<Log> FindByCursoId(int cursoId)
         {
             var log = await _context.Logs.FirstOrDefaultAsync(c => c.CursoId == cursoId);
-            if(log == null) return null;
+            if (log == null) return null;
             return log;
         }
 

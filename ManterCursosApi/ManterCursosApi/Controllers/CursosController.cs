@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ManterCursosApi.Models;
+﻿using ManterCursosApi.Models;
 using ManterCursosApi.Repository.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ManterCursosApi.Controllers
 {
@@ -53,14 +53,14 @@ namespace ManterCursosApi.Controllers
         public async Task<IActionResult> PutCurso(int id, Curso curso)
         {
             string mensagem = await ValidacoesCurso(curso);
-           
+
             if (!mensagem.Equals("Ok")) return BadRequest(mensagem);
-        
+
             try
             {
                 await _repository.Update(curso);
 
-                await AtualizarLog(curso, 1);
+                await AtualizarLog(curso, "alteração");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -88,7 +88,7 @@ namespace ManterCursosApi.Controllers
 
             await _repository.Create(curso);
             CreatedAtAction("GetCurso", new { id = curso.CursoId }, curso);
-          
+
             CriarLog(curso);
 
             return Ok(curso);
@@ -109,7 +109,7 @@ namespace ManterCursosApi.Controllers
 
             curso.IsAtivo = false;
             await _repository.Update(curso);
-            await AtualizarLog(curso, 2);
+            await AtualizarLog(curso, "exclusão");
 
             return NoContent();
         }
@@ -122,27 +122,28 @@ namespace ManterCursosApi.Controllers
 
         }
 
-        private void CriarLog(Curso curso )
+        private void CriarLog(Curso curso)
         {
             var log = new Log()
             {
                 CursoId = curso.CursoId,
                 LogDataInclusao = DateTime.Now,
+                LogDataAtualizacao = DateTime.Now,
                 Usuario = "Admin",
                 Modificacao = "Criação Do Curso"
-              
+
             };
 
             _logRepository.Create(log);
         }
 
-        private async Task<ActionResult> AtualizarLog(Curso curso, int cod)
+        private async Task<ActionResult> AtualizarLog(Curso curso, string mensagem)
         {
             var log = await _logRepository.FindByCursoId(curso.CursoId);
             log.LogDataAtualizacao = DateTime.Now;
 
-            if (cod == 1) log.Modificacao = "Alteração do Curso";
-            if (cod == 2) log.Modificacao = "Exclusão do Curso";
+            if (mensagem.Equals("alteração")) log.Modificacao = "Alteração do Curso";
+            if (mensagem.Equals("exclusão")) log.Modificacao = "Exclusão do Curso";
 
             try
             {
@@ -157,10 +158,10 @@ namespace ManterCursosApi.Controllers
             return NoContent();
 
         }
-        
+
         private async Task<string> ValidacoesCurso(Curso curso)
         {
-           
+
             if (curso == null)
             {
                 return Validacoes.ErrorNaoEncontrado;
@@ -183,7 +184,7 @@ namespace ManterCursosApi.Controllers
 
             if (await _repository.VerificarCursosDuplicados(curso))
             {
-                
+
                 return Validacoes.ErrorCursoJaCadastrado;
             }
 

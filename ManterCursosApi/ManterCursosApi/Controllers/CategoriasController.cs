@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using ManterCursosApi.Models;
+using ManterCursosApi.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ManterCursosApi.Data;
-using ManterCursosApi.Models;
-using ManterCursosApi.Repository.Interfaces;
 
 namespace ManterCursosApi.Controllers
 {
@@ -27,7 +21,6 @@ namespace ManterCursosApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Categoria>>> GetCategorias()
         {
-
             var categorias = await _repository.FindAll();
             return Ok(categorias);
         }
@@ -47,7 +40,7 @@ namespace ManterCursosApi.Controllers
         }
 
         // PUT: api/Categorias/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategoria(int id, Categoria categoria)
         {
@@ -82,7 +75,7 @@ namespace ManterCursosApi.Controllers
         {
             await _repository.Create(categoria);
 
-           CreatedAtAction("GetCategoria", new { id = categoria.CategoriaId }, categoria);
+            CreatedAtAction("GetCategoria", new { id = categoria.CategoriaId }, categoria);
 
             return Ok(categoria);
         }

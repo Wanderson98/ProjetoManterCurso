@@ -45,13 +45,13 @@ namespace ManterCursosApi.Repository
 
         public async Task<IEnumerable<Curso>> FindAllActive()
         {
-           return await _context.Cursos.Where(c=> c.IsAtivo).Include(c=>c.Categoria).ToListAsync();
+            return await _context.Cursos.Where(c => c.IsAtivo).Include(c => c.Categoria).ToListAsync();
         }
 
         public async Task<bool> VerificarCursosPeriodo(Curso curso)
         {
             var cursos = await _context.Cursos.Where(x => (x.CursoDataFinal.Date >= curso.CursoDataInicial.Date)
-            && (x.CursoDataInicial.Date <= curso.CursoDataFinal.Date) 
+            && (x.CursoDataInicial.Date <= curso.CursoDataFinal.Date)
             && (x.IsAtivo && x.CursoId != curso.CursoId)).ToListAsync();
 
             if (cursos.Count() < 1) return false;
@@ -63,7 +63,7 @@ namespace ManterCursosApi.Repository
             var curso = await _context.Cursos.FindAsync(cursoId);
 
             if (curso == null) return null;
-           
+
             return curso;
         }
 
@@ -76,8 +76,8 @@ namespace ManterCursosApi.Repository
 
         public async Task<bool> VerificarCursosDuplicados(Curso curso)
         {
-           var cursos = await _context.Cursos.Where(x => x.CursoDescricao.ToLower().Equals(curso.CursoDescricao.ToLower())
-            && x.IsAtivo && x.CursoId != curso.CursoId ).ToListAsync();
+            var cursos = await _context.Cursos.Where(x => x.CursoDescricao.ToLower().Equals(curso.CursoDescricao.ToLower())
+             && x.IsAtivo && x.CursoId != curso.CursoId).ToListAsync();
             if (cursos.Count() < 1) return false;
             return true;
         }

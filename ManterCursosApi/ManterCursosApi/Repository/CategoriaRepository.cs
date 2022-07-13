@@ -17,9 +17,9 @@ namespace ManterCursosApi.Repository
 
         public async Task<Categoria> Create(Categoria categoria)
         {
-           _context.Categorias.Add(categoria);
-           await _context.SaveChangesAsync();
-           return categoria;
+            _context.Categorias.Add(categoria);
+            await _context.SaveChangesAsync();
+            return categoria;
         }
 
         public async Task<bool> Delete(int categoriaId)
@@ -49,7 +49,7 @@ namespace ManterCursosApi.Repository
             var categoria = await _context.Categorias.FindAsync(categoriaId);
 
             if (categoria == null) return null;
-           
+
             return categoria;
         }
 

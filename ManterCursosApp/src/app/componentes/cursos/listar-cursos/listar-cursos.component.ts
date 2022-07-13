@@ -26,6 +26,7 @@ export class ListarCursosComponent implements OnInit {
   cursoForm!: FormGroup;
   buscaForm!: FormGroup
   tituloModal!: string;
+  nomeBotaoModal!: string;
   idExcluir!: number;
   dataAtual: any = new Date();
   dataInicialFiltro!: Date;
@@ -37,9 +38,10 @@ export class ListarCursosComponent implements OnInit {
     this.CarregarCursosAtivos();
     this.CarregarCategorias();
     this.tituloModal = 'Adicionar curso';
+    this.nomeBotaoModal = 'Adicionar'
     this.cursoForm = this.formBuilder.group({
       cursoId: [0],
-      cursoDescricao: ['', Validators.compose([Validators.required])],
+      cursoDescricao: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
       cursoDataInicial: ['', Validators.compose([Validators.required])],
       cursoDataFinal: ['', Validators.compose([Validators.required])],
       cursoQuantidadeAlunos: [null],
@@ -96,16 +98,14 @@ export class ListarCursosComponent implements OnInit {
 
   CarregarModalEditar(item: any) {
     this.tituloModal = 'Editar Curso';
-    this.cursoForm.controls['cursoId'].setValue(item.cursoId);
-    this.cursoForm.controls['cursoDescricao'].setValue(item.cursoDescricao);
-    this.cursoForm.controls['cursoDataInicial'].setValue(item.cursoDataInicial);
-    this.cursoForm.controls['cursoDataFinal'].setValue(item.cursoDataFinal);
-    this.cursoForm.controls['isAtivo'].setValue(item.isAtivo);
-    this.cursoForm.controls['cursoQuantidadeAlunos'].setValue(
-      item.cursoQuantidadeAlunos
-    );
-    this.cursoForm.controls['categoriaId'].setValue(item.categoriaId);
-    //this.cursoForm.patchValue(item)
+    this.nomeBotaoModal = 'Salvar'
+   this.cursoForm.controls['cursoId'].setValue(item.cursoId);
+   this.cursoForm.controls['cursoDescricao'].setValue(item.cursoDescricao);  
+   this.cursoForm.controls['isAtivo'].setValue(item.isAtivo);
+   this.cursoForm.controls['cursoQuantidadeAlunos'].setValue(item.cursoQuantidadeAlunos);
+   this.cursoForm.controls['categoriaId'].setValue(item.categoriaId);
+    this.cursoForm.controls['cursoDataInicial'].setValue( item.cursoDataInicial.split('T')[0]);
+    this.cursoForm.controls['cursoDataFinal'].setValue(item.cursoDataFinal.split('T')[0]);
   }
 
   EnviarFormulario() {
@@ -213,5 +213,10 @@ export class ListarCursosComponent implements OnInit {
   LimparFiltro(){
     this.buscaForm.reset();
     this.CarregarCursosAtivos();
+  }
+
+  convertDate(date: any) : Date
+  {
+    return date.split('T')[0]
   }
 }
