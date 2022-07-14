@@ -99,11 +99,11 @@ export class ListarCursosComponent implements OnInit {
   CarregarModalEditar(item: any) {
     this.tituloModal = 'Editar Curso';
     this.nomeBotaoModal = 'Salvar'
-   this.cursoForm.controls['cursoId'].setValue(item.cursoId);
-   this.cursoForm.controls['cursoDescricao'].setValue(item.cursoDescricao);  
-   this.cursoForm.controls['isAtivo'].setValue(item.isAtivo);
-   this.cursoForm.controls['cursoQuantidadeAlunos'].setValue(item.cursoQuantidadeAlunos);
-   this.cursoForm.controls['categoriaId'].setValue(item.categoriaId);
+    this.cursoForm.controls['cursoId'].setValue(item.cursoId);
+    this.cursoForm.controls['cursoDescricao'].setValue(item.cursoDescricao);  
+    this.cursoForm.controls['isAtivo'].setValue(item.isAtivo);
+    this.cursoForm.controls['cursoQuantidadeAlunos'].setValue(item.cursoQuantidadeAlunos);
+    this.cursoForm.controls['categoriaId'].setValue(item.categoriaId);
     this.cursoForm.controls['cursoDataInicial'].setValue( item.cursoDataInicial.split('T')[0]);
     this.cursoForm.controls['cursoDataFinal'].setValue(item.cursoDataFinal.split('T')[0]);
 
@@ -199,16 +199,15 @@ export class ListarCursosComponent implements OnInit {
 
   filtrarCursoDataFinal(dataFinal: any) : any
   {
-    
     this.cursosFiltradosDescricao = this.cursosAtivos.filter(result =>{
-      return result.cursoDataInicial <= dataFinal || result.cursoDataFinal <= dataFinal
+      return this.formatarData(result.cursoDataInicial) <= dataFinal || result.cursoDataFinal <= dataFinal
     })
   }
 
   filtrarCursoDataInicialFinal(dataInicial:any, dataFinal: any) : any
   {
     this.cursosFiltradosDescricao = this.cursosAtivos.filter(result =>{
-      return (result.cursoDataInicial >= dataInicial || result.cursoDataFinal >= dataInicial) && (result.cursoDataInicial <= dataFinal || result.cursoDataFinal <= dataFinal)
+      return (result.cursoDataInicial >= dataInicial  || result.cursoDataFinal >= dataInicial) && (this.formatarData(result.cursoDataInicial) <= dataFinal || result.cursoDataFinal <= dataFinal)
     })
   }
 
@@ -216,5 +215,9 @@ export class ListarCursosComponent implements OnInit {
     this.buscaForm.reset();
     this.CarregarCursosAtivos();
   }
-
+ //metodo para transformar data padrao "2022-06-30T00:00:00" em "2022-06-30"
+  formatarData(data : any)
+  {
+    return data.split('T')[0]
+  }
 }
