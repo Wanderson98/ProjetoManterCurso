@@ -214,6 +214,7 @@ export class ListarCursosComponent implements OnInit {
   LimparFiltro(){
     this.buscaForm.reset();
     this.CarregarCursosAtivos();
+    this._filtroCursosDescricao = '';
   }
  //metodo para transformar data padrao "2022-06-30T00:00:00" em "2022-06-30"
   formatarData(data : any)
