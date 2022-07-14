@@ -21,7 +21,7 @@ export class ListarCursosComponent implements OnInit {
   ) {}
 
   cursosAtivos!: Curso[];
-  cursosFiltradosDescricao!: Curso[];
+  cursosFiltrados!: Curso[];
   categorias!: Categoria[];
   cursoForm!: FormGroup;
   buscaForm!: FormGroup
@@ -62,7 +62,7 @@ export class ListarCursosComponent implements OnInit {
 
   public set filtroListaDescricao(value: string) {
     this._filtroCursosDescricao = value;
-    this.cursosFiltradosDescricao = this.filtroListaDescricao
+    this.cursosFiltrados = this.filtroListaDescricao
       ? this.filtrarCursosDescricao(this.filtroListaDescricao)
       : this.cursosAtivos;
   }
@@ -78,7 +78,7 @@ export class ListarCursosComponent implements OnInit {
   CarregarCursosAtivos(): void {
     this.cursoService.ListarTodosCursosAtivos().subscribe((data) => {
       this.cursosAtivos = data;
-      this.cursosFiltradosDescricao = data;
+      this.cursosFiltrados = data;
     });
   }
 
@@ -161,7 +161,7 @@ export class ListarCursosComponent implements OnInit {
       },
       error: (res) => {
         console.log(res)
-        if (res.error.errors || res.error == null) {
+        if (res.error.errors || res.error == null || res.error.length > 100) {
           this.toastr.error('Erro Inesperado', 'Error');
         } else {
           this.toastr.error(res.error);
@@ -192,21 +192,21 @@ export class ListarCursosComponent implements OnInit {
 
   filtrarCursoDataInicial(dataInicial: any) : any
   {
-    this.cursosFiltradosDescricao = this.cursosAtivos.filter(result =>{
+    this.cursosFiltrados = this.cursosAtivos.filter(result =>{
       return result.cursoDataInicial >= dataInicial || result.cursoDataFinal >= dataInicial
     })
   }
 
   filtrarCursoDataFinal(dataFinal: any) : any
   {
-    this.cursosFiltradosDescricao = this.cursosAtivos.filter(result =>{
+    this.cursosFiltrados = this.cursosAtivos.filter(result =>{
       return this.formatarData(result.cursoDataInicial) <= dataFinal || result.cursoDataFinal <= dataFinal
     })
   }
 
   filtrarCursoDataInicialFinal(dataInicial:any, dataFinal: any) : any
   {
-    this.cursosFiltradosDescricao = this.cursosAtivos.filter(result =>{
+    this.cursosFiltrados = this.cursosAtivos.filter(result =>{
       return (result.cursoDataInicial >= dataInicial  || result.cursoDataFinal >= dataInicial) && (this.formatarData(result.cursoDataInicial) <= dataFinal || result.cursoDataFinal <= dataFinal)
     })
   }

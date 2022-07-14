@@ -74,7 +74,7 @@
       <th scope="col">Ações</th>
     </thead>
     <tbody >
-      <tr *ngFor="let item of cursosFiltradosDescricao; let i = index">
+      <tr *ngFor="let item of cursosFiltrados; let i = index">
         <th scope="row">{{ i + 1 }}</th>
         <td>{{ item.cursoDescricao }}</td>
         <td>{{ item.categoria.categoriaNome }}</td>
@@ -110,7 +110,7 @@
       </tr>
     </tbody>
     <tfoot>
-      <td *ngIf="cursosFiltradosDescricao.length < 1">
+      <td *ngIf="cursosFiltrados.length < 1">
         <h5 class="ms-3">Nenhum curso encontrado</h5>
       </td>
     </tfoot>
