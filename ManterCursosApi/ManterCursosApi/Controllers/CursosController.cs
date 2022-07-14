@@ -177,6 +177,10 @@ namespace ManterCursosApi.Controllers
             {
                 return Validacoes.ErrorDataFinalMenorInicial;
             }
+            if (curso.CursoQuantidadeAlunos < 1)
+            {
+                return Validacoes.ErrorDataFinalMenorInicial;
+            }
 
             if (await _repository.VerificarCursosPeriodo(curso))
             {

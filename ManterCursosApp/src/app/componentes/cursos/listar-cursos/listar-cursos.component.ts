@@ -106,8 +106,9 @@ export class ListarCursosComponent implements OnInit {
    this.cursoForm.controls['categoriaId'].setValue(item.categoriaId);
     this.cursoForm.controls['cursoDataInicial'].setValue( item.cursoDataInicial.split('T')[0]);
     this.cursoForm.controls['cursoDataFinal'].setValue(item.cursoDataFinal.split('T')[0]);
-  }
 
+  }
+ 
   EnviarFormulario() {
     const curso: Curso = this.cursoForm.value;
     console.log(curso)

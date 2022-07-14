@@ -63,7 +63,7 @@
   </div>
   <!-- Tabela exibição cursos -->
   <div style="overflow: auto;">
-  <table class="table mt-4">
+  <table class="table mt-4  table-hover">
     <thead>
       <th scope="col">#</th>
       <th scope="col">Descrição</th>
@@ -73,7 +73,7 @@
       <th scope="col">Data Final</th>
       <th scope="col">Ações</th>
     </thead>
-    <tbody>
+    <tbody >
       <tr *ngFor="let item of cursosFiltradosDescricao; let i = index">
         <th scope="row">{{ i + 1 }}</th>
         <td>{{ item.cursoDescricao }}</td>
@@ -100,6 +100,7 @@
             (click)="PegarIdExclusao(item.cursoId)"
             data-bs-toggle="modal"
             data-bs-target="#modalExclusao"
+            [disabled]="item.cursoDataFinal < dataAtual"
           ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
             <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
           </svg>
@@ -214,7 +215,17 @@
               class="form-control"
               formControlName="cursoQuantidadeAlunos"
               placeholder="Opcional"
+              min="0"
             />
+            <div
+              *ngIf="
+                cursoForm.controls['cursoQuantidadeAlunos'].invalid
+              "
+            >
+              <span class="alert"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-exclamation-octagon-fill me-1" viewBox="0 0 16 16">
+                <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+              </svg>Não é permitido números negativos</span>
+            </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Categoria*</label>

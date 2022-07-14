@@ -57,7 +57,7 @@ namespace ManterCursosApi.Repository
             if (cursos.Count() < 1) return false;
             return true;
         }
-
+                                                   
         public async Task<Curso> FindById(int cursoId)
         {
             var curso = await _context.Cursos.FindAsync(cursoId);

@@ -8,6 +8,8 @@
         public static string ErrorDataInicialMenorAtual { get; } = "Cod-004 Data inicial do curso não pode ser menor do que a atual";
         public static string ErrorNaoEncontrado { get; } = "Cod-005 Nao Encontrado";
         public static string ErrorExclusaoCursoConcluido { get; } = "Cod-006 Não é permitida a exclusão de um curso concluido";
+
+        public static string ErrorNumeroAlunosNegativo { get; } = "Cod-007 Não é permitida a inclusão de números negativos";
         public static string CursoOK { get; } = "Ok";
     }
 }
